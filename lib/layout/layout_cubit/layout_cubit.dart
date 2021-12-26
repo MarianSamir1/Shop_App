@@ -244,8 +244,8 @@ class ShopLayoutCubit extends Cubit<ShopLayoutState> {
       data: {"quantity": "$quantity"},
       token: token,
     ).then((value) {
-      getCartData();
       emit(UpdateCartSuccessState());
+      getCartData();
     }).catchError((error) {
       emit(UpdateCartErrorState(error.toString()));
       print(error);
@@ -264,7 +264,6 @@ class ShopLayoutCubit extends Cubit<ShopLayoutState> {
             token: token)
         .then((value) {
       searchModel = SearchModel.fromJson(value.data);
-      print(searchModel!.data.serachList);
       emit(SearchSuccessState());
     }).catchError((error) {
       print("Search Error : ${error.toString()}");

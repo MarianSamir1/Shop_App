@@ -19,7 +19,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   void initState() {
-    ShopLayoutCubit.get(context).searchModel!.data.serachList=[];
+    ShopLayoutCubit.get(context).searchModel?.data.serachList.clear();
     super.initState();
   }
   var formKey = GlobalKey<FormState>();
@@ -39,7 +39,7 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           ),
           body:Padding(
-            padding: const EdgeInsets.all(30.0),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
             child: Column(
               children: [
                 Form(

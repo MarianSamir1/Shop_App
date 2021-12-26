@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
@@ -220,6 +221,26 @@ Widget backbutton(context) => Container(
           )),
     );
 
+Future awesomeDialog({
+  required BuildContext context ,
+  required Function okPress,
+  required String title
+})=> 
+AwesomeDialog(
+                context: context,
+                dialogType: DialogType.INFO_REVERSED,
+                width: 280,
+                buttonsBorderRadius: const BorderRadius.all(Radius.circular(2)),
+                headerAnimationLoop: false,
+                animType: AnimType.BOTTOMSLIDE,
+                title: title ,
+                showCloseIcon: true,
+                btnCancelOnPress: () {},
+                btnOkOnPress: () {
+                  okPress();
+                },
+              ).show();
+
 Widget rowOfPriceAndOldPrice(
         {required dynamic price, required dynamic oldPrice, required int discount}) =>
     Row(
@@ -243,13 +264,3 @@ Widget rowOfPriceAndOldPrice(
                       fontSize: 12,
                       fontWeight: FontWeight.bold)),
         ]);
-
-Widget iconBlusAndMinusInCartScreen(
-  {
-    required Widget icon
-  }
-) => IconButton(
-    onPressed: () {},
-    icon: CircleAvatar(
-        backgroundColor: Colors.indigo[50], child: icon
-        ));

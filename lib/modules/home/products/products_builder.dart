@@ -208,9 +208,7 @@ Widget itemBuilder(
                 ],
               ),
               const SizedBox(height: 10,),
-              ShopLayoutCubit.get(context).cartIds[productsModel.id] != null?
-              blusAndMinus(context , productsModel.id)
-              :
+              ShopLayoutCubit.get(context).productsQuantity[productsModel.id] == null || ShopLayoutCubit.get(context).productsQuantity[productsModel.id] == 0?
                 Container(
                   alignment: AlignmentDirectional.bottomCenter,
                   child: ElevatedButton.icon(
@@ -219,7 +217,9 @@ Widget itemBuilder(
                       },
                       icon: const Icon(Icons.shopping_cart),
                       label: const Text('Add To Cart')),
-                ),
+                ):
+                blusAndMinus(context , productsModel.id)
+              
             ]),
       ),
     );

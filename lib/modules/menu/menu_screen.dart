@@ -36,18 +36,8 @@ class MenuScreen extends StatelessWidget {
             foregroundColor: Colors.white,
             elevation: 20,
             onPressed: () {
-              AwesomeDialog(
-                context: context,
-                dialogType: DialogType.INFO_REVERSED,
-                width: 280,
-                buttonsBorderRadius: const BorderRadius.all(Radius.circular(2)),
-                headerAnimationLoop: false,
-                animType: AnimType.BOTTOMSLIDE,
-                title: 'Log Out',
-                showCloseIcon: true,
-                btnCancelOnPress: () {},
-                btnOkOnPress: () {
-                  ChashHelper.removeData(key: 'token').then((value) {
+              awesomeDialog(context: context ,title: 'Log Out' , okPress: (){
+                ChashHelper.removeData(key: 'token').then((value) {
                     print('Log Outttttt');
                     navigateAndFinsh(context, const LoginScreen());
                   }).catchError((error) {
@@ -55,8 +45,7 @@ class MenuScreen extends StatelessWidget {
                         msg: 'Some thing error try again',
                         state: ToastStates.ERROR);
                   });
-                },
-              ).show();
+              });
             },
             icon: const Icon(Icons.exit_to_app),
             label: const Text("Log Out"),

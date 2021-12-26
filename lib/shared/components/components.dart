@@ -62,7 +62,7 @@ PreferredSizeWidget appBar(
       actions: [
         IconButton(
             onPressed: () {
-              navigate(context, SearchScreen());
+              navigate(context, const SearchScreen());
             },
             icon: Icon(
               Icons.search,
@@ -177,20 +177,20 @@ Widget blusAndMinus(context , int id) => Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         iconBlusAndRemove(const Icon(Icons.add), (){
-          ShopLayoutCubit.get(context).blus();
+          ShopLayoutCubit.get(context).changeQuantityItem(id );
         }),
         const SizedBox(
           width: 22,
         ),
         Text(
-          '${ShopLayoutCubit.get(context).cartCount}',
+          '${ShopLayoutCubit.get(context).productsQuantity[id]}',
           style: const TextStyle(fontSize: 20),
         ),
         const SizedBox(
           width: 22,
         ),
         iconBlusAndRemove(const Icon(Icons.remove),(){
-          ShopLayoutCubit.get(context).minus(id);
+         ShopLayoutCubit.get(context).changeQuantityItem(id , increment: false);
         }),
       ],
     );

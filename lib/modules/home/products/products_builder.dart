@@ -208,7 +208,7 @@ Widget itemBuilder(
                 ],
               ),
               const SizedBox(height: 10,),
-              ShopLayoutCubit.get(context).cart[productsModel.id] == true && ShopLayoutCubit.get(context).cartCount !=0?
+              ShopLayoutCubit.get(context).cartIds[productsModel.id] != null?
               blusAndMinus(context , productsModel.id)
               :
                 Container(

@@ -32,13 +32,13 @@ class LayoutScreen extends StatelessWidget {
                     background: defultColor,
                     title: cubit.titile[cubit.currentIndex],
                     context: context,
-                    condition: cubit.count != 0,
-                    count: cubit.count)
+                    condition: cubit.cartCount != 0,
+                    count: cubit.cartCount)
                 : appBar(
                     title: cubit.titile[cubit.currentIndex],
                     context: context,
-                    condition: cubit.count != 0,
-                    count: cubit.count),
+                    condition: cubit.cartCount != 0,
+                    count: cubit.cartCount),
             extendBody: true,
             body: Builder(builder: (context) {
               return OfflineBuilder(

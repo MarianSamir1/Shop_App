@@ -14,7 +14,6 @@ import 'package:shop_app/modules/home/categores/categores_screen.dart';
 import 'package:shop_app/modules/home/favorates/fav_screen.dart';
 import 'package:shop_app/modules/home/products/products_screen.dart';
 import 'package:shop_app/modules/home/profile/profile_screen.dart';
-import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/network/end_points.dart';
 import 'package:shop_app/shared/network/remote/dio_helper.dart';
 import 'package:shop_app/shared/styels/constants.dart';
@@ -38,11 +37,7 @@ class ShopLayoutCubit extends Cubit<ShopLayoutState> {
     ProfileScreen()
   ];
 
-  int count = 0;
-
   int currentIndex = 0;
-
-  Map<int, bool> cart = {};
 
   changeBottomScreen(int index) {
     currentIndex = index;
@@ -58,7 +53,6 @@ class ShopLayoutCubit extends Cubit<ShopLayoutState> {
       homeModel = HomeModel.fromJson(value.data);
       for (var element in homeModel!.data.products) {
         favorites.addAll({element.id: element.inFav});
-        cart.addAll({element.id: element.inCart});
       }
       emit(ShopLayoutHomeDataSuccessState());
     }).catchError((error) {
@@ -177,54 +171,84 @@ class ShopLayoutCubit extends Cubit<ShopLayoutState> {
 
   AddOrRemoveToCartModel? addOrRemoveToCartModel;
 
-  void addOrRemoveCartItem({required int productId}) {
-    cart[productId] = !cart[productId]!;
+  void  addOrRemoveCartItem({required int productId}) {
+    var quantity = productsQuantity[productId];
+    bool added = quantity == null;
+    if (added) {
+      productsQuantity[productId] = 1;
+    } else {
+      cartIds.remove(productId);
+      productsQuantity.remove(productId);
+    }
+
     emit(ShopAddOrRemoveCartDataLoadingState());
     DioHelper.postData(
-            url: CARTS, data: {'product_id': productId}, token: token)
-        .then((value) {
+            url: CARTS, 
+            data: {
+              'product_id': productId}
+              , token: token
+            ).then((value) {
       addOrRemoveToCartModel = AddOrRemoveToCartModel.fromJson(value.data);
-      if (addOrRemoveToCartModel!.status == false) {
-        cart[productId] = !cart[productId]!;
-      } else {
+      if(addOrRemoveToCartModel!.status == false){
+        cartIds.remove(productId);
+      }else{
         getCartData();
       }
       emit(ShopAddOrRemoveCartDataSuccessState(addOrRemoveToCartModel!));
     }).catchError((error) {
+      cartIds.remove(productId);
       print(error.toString());
-      cart[productId] = !cart[productId]!;
       emit(ShopAddOrRemoveCartDataErrorState(error.toString()));
     });
   }
 
   CartModel? cartModel;
-  int cartCount = 1;
 
-  blus() {
-    cartCount++;
-    emit(BlusState());
-  }
-
-  minus(int id) {
-    if (cartCount != 0) {
-      cartCount--;
-      emit(MinusState());
-    } else {
-      emit(MinusState());
-    }
-  }
+  int cartCount = 0;
+  var cartIds = {};
+  var productsQuantity = {};
 
   void getCartData() {
     emit(ShopGetCartDataLoadingState());
     DioHelper.getData(url: CARTS, token: token).then((value) {
       cartModel = CartModel.fromJason(value.data);
-      print(cartModel!.status);
-      print(cartModel!.data.cartItem);
-      count = cartModel!.data.cartItem.length;
+      cartCount = cartModel!.data.cartItem.length;
+      for (var value in cartModel!.data.cartItem) {
+        //add cartIds to use in update cart method
+        cartIds[value.productCartData.id] = value.id;
+        productsQuantity[value.productCartData.id] = value.quantity;
+      }
       emit(ShopGetCartDataSuccessState());
     }).catchError((error) {
       print(error.toString());
       emit(ShopGetCartDataErrorState(error.toString()));
+    });
+  }
+
+  void changeQuantityItem(int productId, {bool increment = true}) {
+    emit(UpdateCartLoadingState());
+    var cartId = cartIds[productId];
+    int quantity = productsQuantity[productId];
+   if (increment && quantity >= 0) {
+     quantity++;
+   } else if (!increment && quantity > 1) {
+     quantity--;
+   } else if (!increment && quantity == 1) {
+      quantity--;
+      addOrRemoveCartItem(productId: productId);
+
+    }
+    productsQuantity[productId] = quantity;
+    DioHelper.putData(
+      url: "$CARTS/$cartId",
+      data: {"quantity": "$quantity"},
+      token: token,
+    ).then((value) {
+      getCartData();
+      emit(UpdateCartSuccessState());
+    }).catchError((error) {
+      emit(UpdateCartErrorState(error.toString()));
+      print(error);
     });
   }
 

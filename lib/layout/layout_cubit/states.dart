@@ -136,3 +136,12 @@ class SearchErrorState extends ShopLayoutState{
   SearchErrorState(this.error);
 
 }
+
+class UpdateCartLoadingState extends ShopLayoutState{}
+
+class UpdateCartSuccessState extends ShopLayoutState{}
+
+class UpdateCartErrorState extends ShopLayoutState{
+  final String error;
+  UpdateCartErrorState(this.error);
+}

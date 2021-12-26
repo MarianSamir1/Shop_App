@@ -119,7 +119,7 @@ class ProductDetailsScreen extends StatelessWidget {
                               onPressed: () {
                                 cubit.addOrRemoveCartItem(productId: cubit.productsModel!.id);
                               },
-                              icon: cubit.cart[cubit.productsModel!.id] == true? const Icon(
+                              icon: cubit.cartIds[cubit.productsModel!.id] !=null ? const Icon(
                                 Icons.shopping_cart,
                                 size: 27,
                                 color: Colors.red,

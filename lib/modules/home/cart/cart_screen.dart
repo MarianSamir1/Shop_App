@@ -22,7 +22,7 @@ class CartScreen extends StatelessWidget {
             centerTitle: true,
             title: const Text(
               'My Cart',
-              style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             leading: Padding(
               padding: const EdgeInsets.all(8.0),

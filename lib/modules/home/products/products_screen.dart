@@ -26,6 +26,7 @@ class ProductScreen extends StatelessWidget {
         return RefreshIndicator(
             onRefresh: () async {
               cubit.getHomeData();
+              
             },
             child: state is ShopLayoutHomeDataErrorState || connected == false
                 ? Column(
@@ -63,4 +64,5 @@ class ProductScreen extends StatelessWidget {
       },
     );
   }
+
 }

@@ -218,7 +218,7 @@ Widget itemBuilder(
                       icon: const Icon(Icons.shopping_cart),
                       label: const Text('Add To Cart')),
                 ):
-                blusAndMinus(context , productsModel.id)
+                BlusAndMinus(context , productsModel.id)
               
             ]),
       ),

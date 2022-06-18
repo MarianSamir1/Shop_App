@@ -174,11 +174,12 @@ Color chooseToastColor(ToastStates state) {
 }
 
 
-Widget blusAndMinus(context , int id) => Row(
+Widget BlusAndMinus(context , int id) => Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         iconBlusAndRemove(const Icon(Icons.add), (){
           ShopLayoutCubit.get(context).changeQuantityItem(id );
+          
         }),
         const SizedBox(
           width: 22,

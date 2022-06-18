@@ -48,7 +48,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     controller: searchcontroller ,
                     keyboardType: TextInputType.text ,
                     onChanged: (String value){
-                      ShopLayoutCubit.get(context).getSearch(searchKey: value);
+                      ShopLayoutCubit.get(context).getSearch(searchKey: value.trim());
                     },
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.search),

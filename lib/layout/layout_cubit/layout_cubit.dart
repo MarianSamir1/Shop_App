@@ -7,6 +7,7 @@ import 'package:shop_app/models/categories_model/categories_data_model.dart';
 import 'package:shop_app/models/categories_model/categories_model.dart';
 import 'package:shop_app/models/favorite_models/change_fav_model.dart';
 import 'package:shop_app/models/favorite_models/fav_products_data_model.dart';
+import 'package:shop_app/models/help_model.dart';
 import 'package:shop_app/models/home_models/home_model.dart';
 import 'package:shop_app/models/search_model.dart';
 import 'package:shop_app/models/user_model.dart';
@@ -28,6 +29,7 @@ class ShopLayoutCubit extends Cubit<ShopLayoutState> {
     Colors.redAccent.shade100,
     Colors.cyan,
     Colors.red.shade400,
+    Colors.teal.shade200,
   ];
   List<String> titile = ['Salla', 'Categories', 'Favorites', 'Profile'];
   List<Widget> layoutScreen = [
@@ -226,30 +228,44 @@ class ShopLayoutCubit extends Cubit<ShopLayoutState> {
   }
 
   void changeQuantityItem(int productId, {bool increment = true}) {
-    emit(UpdateCartLoadingState());
-    var cartId = cartIds[productId];
-    int quantity = productsQuantity[productId];
+    
+   int quantity = productsQuantity[productId];
    if (increment && quantity >= 0) {
      quantity++;
+     emit(BlusState());
    } else if (!increment && quantity > 1) {
      quantity--;
+     emit(MinusState());
    } else if (!increment && quantity == 1) {
       quantity--;
       addOrRemoveCartItem(productId: productId);
-
+      emit(MinusState());
     }
     productsQuantity[productId] = quantity;
-    DioHelper.putData(
-      url: "$CARTS/$cartId",
-      data: {"quantity": "$quantity"},
+    
+  }
+
+  void apiChangeQuantity(){
+    emit(UpdateCartLoadingState());
+    try{
+     print(productsQuantity);
+     productsQuantity.forEach((key, value) {
+     print(key);
+     print(value);
+     DioHelper.putData(
+      url: "$CARTS/$key}",
+      data: {"quantity": "$value"},
       token: token,
     ).then((value) {
       emit(UpdateCartSuccessState());
-      getCartData();
-    }).catchError((error) {
-      emit(UpdateCartErrorState(error.toString()));
-      print(error);
-    });
+    }).catchError((error){
+      emit(UpdateCartErrorState( error.toString()));
+    }); 
+   });
+   getCartData();
+    }catch(e){
+      print(e.toString());
+    }
   }
 
   SearchModel? searchModel;
@@ -268,6 +284,19 @@ class ShopLayoutCubit extends Cubit<ShopLayoutState> {
     }).catchError((error) {
       print("Search Error : ${error.toString()}");
       emit(SearchErrorState(error.toString()));
+    });
+  }
+
+  HelpModel? helpModel; 
+
+  void getFaqs(){
+    emit(FaqsLoadingState());
+    DioHelper.getData(url: HELPE).then((value) {
+      helpModel = HelpModel.fromJson(value.data['data']);
+      emit(FaqsSuccessState());
+    }).catchError((error){
+      print("Faqs Error : ${error.toString()}");
+      emit(FaqsErrorState(error));
     });
   }
 }

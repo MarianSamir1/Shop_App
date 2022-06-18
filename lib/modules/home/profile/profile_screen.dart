@@ -73,8 +73,8 @@ class ProfileScreen extends StatelessWidget {
                         clipBehavior: Clip.antiAliasWithSaveLayer,
                         borderRadius: BorderRadius.circular(100),
                         child: Image.network(
-                          'https://choicepsychology.com.au/wp-content/uploads/photo-1494790108377-be9c29b29330.jpg',
-                          //data!.image
+                          
+                          data!.image,
                           fit: BoxFit.cover,
                           height: 170,
                           width: 170,

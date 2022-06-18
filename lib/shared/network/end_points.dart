@@ -19,3 +19,5 @@ const GET_CATEGORIES_Details ='categories';
 const GET_PRODUCT_Details = 'products';
 
 const SEARCH = 'products/search';
+
+const HELPE = 'faqs'; 
